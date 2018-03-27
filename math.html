@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="mathStyle.css" />
+    <title>Math</title>
+	<script>
+    var zoom=50;
+    var position={x:0,y:0};
+    var w = window.innerWidth;
+    var h = window.innerHeight;
+	  var s = 1;
+    var grapher_bar_put_status={move:0,edit:0,add:0};
+    var grapher_add_put_status={function:0,point:0,circle:0,polygonal:0};
+	</script>
+  </head>
+  <body>
+    <div class="container" onclick="bars(this);">
+      <div class="bar1"></div>
+      <div class="bar2"></div>
+      <div class="bar3"></div>
+    </div>
+    <div class="icon-bar">
+      <i onclick="ope(0)"><img src="img/calculator.png" /></i>
+      <i onclick="ope(1)"><img src="img/axis.png" /></i>
+      <i onclick="ope(2)"><img src="img/operation.png" /></i>
+      <i onclick="ope(3)"><img src="img/science.png" /></i>
+      <i onclick="ope(4)"><img src="img/settings.png" /></i>
+    </div>
+
+    <div class="calc">
+
+    </div>
+
+  <div class="grapher">
+	    <div class="grapher_options">
+        <div class="grapher_bar">
+          <i onclick="grapher_control(0)" style="margin-right: 11px;"><img src="img/add.png"/></i>
+          <i onclick="grapher_control(1)"><img src="img/edit.png" /></i>
+          <i onclick="grapher_control(2)"><img src="img/move.png" /></i>
+          <i onclick="grapher_control(3)"><img src="img/zoom-in.png" /></i>
+          <i onclick="grapher_control(4)"><img src="img/zoom-out.png" /></i>
+        </div>
+		  <div class="grapher_bar_put">
+		    <div id="move" style="display: none;height: 100%;overflow: auto;">
+          <div class="move_arrows">
+            <img src="img/arrow.png" style="float: left;transform: rotate(180deg);" onclick="grapher_control(8)" />
+            <img src="img/arrow.png" style="float: right;" onclick="grapher_control(7)" />
+          </div>
+          <div class="move_arrows" style="transform: rotate(90deg);">
+            <img src="img/arrow.png" style="float: left;transform: rotate(180deg);" onclick="grapher_control(5)" />
+            <img src="img/arrow.png" style="float: right;" onclick="grapher_control(6)" />
+          </div>
+		    </div>
+		    <div id="edit" style="background-color: red;display: none;height: 100%;overflow: auto;">
+
+		    </div>
+		    <div id="add" style="display: none;height: auto;overflow: auto;background-color: lightgray;">
+          <table>
+            <tr>
+              <td onclick="grapher_control(9)"><img src="img/function.png" /></td>
+              <td onclick="grapher_control(10)"><img src="img/point.png" /></td>
+              <td onclick="grapher_control(11)"><img src="img/circle.png" /></td>
+              <td onclick="grapher_control(12)"><img src="img/polygonal.png" /></td>
+            </tr>
+          </table>
+          <div id="add_function" style="text-align: center;display: none;">
+            <input type="text" name="name" placeholder="Name" />
+            <input type="text" name="eq" placeholder='Equation " 3cos(x) "' />
+            <input type="text" name="width" placeholder="width" style="width: 35%;margin: 14.5px;float: left;" />
+            <input type="color" name="color" style="width: 35%;hight: 20px;margin: 14.5px 0;float: right;" value="#0000ff" />
+            <input type="button" value="Create" class="btn_add" onclick="create(0)" />
+            <div id="error_message"></div>
+          </div>
+          <div id="add_point" style="text-align: center;display: none;">
+            <input type="text" name="name" placeholder="Name" />
+            <input type="text" name="x" placeholder="X" style="width: 35%;margin: 14.5px;float: left;" />
+            <input type="text" name="y" placeholder="Y" style="width: 35%;margin: 14.5px;float: right;" />
+            <input type="text" name="width" placeholder="width" style="width: 35%;margin: 14.5px;float: left;" />
+            <input type="color" name="color" style="width: 35%;hight: 20px;margin: 14.5px;float: right;" value="#0000ff" />
+            <input type="button" value="Create" class="btn_add" onclick="create(1)" />
+            <div id="error_message"></div>
+
+          </div>
+          <div id="add_circle" style="text-align: center;display: none;">
+            <input type="text" name="name" placeholder="Name" />
+            <input type="text" name="r" placeholder="R" style="width: 25%;margin: 14.5px;float: left;" />
+            <input type="text" name="x" placeholder="X" style="width: 25%;margin: 14.5px auto;" />
+            <input type="text" name="y" placeholder="Y" style="width: 25%;margin: 14.5px;float: right;" />
+            <input type="text" name="width" placeholder="width" style="width: 35%;margin: 14.5px;float: left;" />
+            <input type="color" name="color" style="width: 35%;hight: 20px;margin: 14.5px;float: right;" value="#0000ff" />
+            <input type="button" value="Create" class="btn_add" onclick="create(2)" />
+            <div id="error_message"></div>
+          </div>
+          <div id="add_polygonal" style="text-align: center;display: none;">
+            <input type="text" name="name" placeholder="Name" />
+            <input type="text" name="x" placeholder='X "2,-3,0" ' />
+            <input type="text" name="y" placeholder='Y "6,4,-8" ' />
+            <input type="text" name="width" placeholder="width" style="width: 35%;margin: 14.5px;float: left;" />
+            <input type="color" name="color" style="width: 35%;hight: 20px;margin: 14.5px;float: right;" value="#0000ff" />
+            <input type="button" value="Create" class="btn_add" onclick="create(3)" />
+            <div id="error_message"></div>
+          </div>
+		    </div>
+		  </div>
+    </div>
+    <canvas id="oij" width="" height=""></canvas>
+    <canvas id="gr" width="" height="">
+      the HTML5 canvas cannot run, to fix this poblem try to:<br />
+      -- check your internet connection<br />
+      -- check the javascript access<br />
+      -- update your browser to the last version<br />
+      -- lanch the app in an other browser
+    </canvas>
+  </div>
+
+    <div class="solver">
+
+    </div>
+
+    <div class="converter">
+
+    </div>
+
+    <div class="setting">
+
+    </div>
+
+    <script src="control.js"></script>
+    <script src="tapScript.js"></script>
+    <script src="savaScript.js"></script>
+    <script src="graphScript.js"></script>
+    <script>
+      document.getElementById('oij').height=h;
+      document.getElementById('oij').width=w;
+      document.getElementById('gr').height=h;
+      document.getElementById('gr').width=w;
+      oij();
+      ope(0);
+      document.getElementsByClassName('container')[0].classList.add("change");
+    </script>
+  </body>
+</html>
